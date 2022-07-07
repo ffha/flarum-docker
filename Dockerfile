@@ -13,5 +13,4 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 USER www-data
 RUN composer create-project flarum/flarum .
 RUN composer require flarum-lang/chinese-simplified
-RUN php flarum cache:clear
 USER root
