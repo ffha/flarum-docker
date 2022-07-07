@@ -2,6 +2,15 @@ FROM php:8.1-apache
 RUN rm -rf /etc/apt/preferences.d/*
 RUN apt-get update
 RUN apt-get install git unzip -y
+RUN apt-get update && apt-get install -y \
+		libfreetype6-dev \
+		libjpeg62-turbo-dev \
+		libpng-dev \
+	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
+	&& docker-php-ext-install -j$(nproc) gd
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install mysqlnd
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN mkdir /app
 WORKDIR /app
