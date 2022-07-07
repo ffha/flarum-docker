@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
 	&& docker-php-ext-install -j$(nproc) gd
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install mysqli
-RUN docker-php-ext-install mysqlnd
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN mkdir /app
 WORKDIR /app
