@@ -1,4 +1,6 @@
 FROM php:8.1-apache
+RUN rm -rf /etc/apt/preferences.d/*
+RUN apt-get update
 RUN apt-get install git unzip -y
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN mkdir /app
