@@ -17,6 +17,7 @@ WORKDIR /app
 ENV APACHE_DOCUMENT_ROOT /app/public
 RUN chmod -R 755 /app
 RUN chown -R www-data:www-data /app
+RUN echo "AllowOverride All" >> /etc/apache2/apache2.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 USER www-data
