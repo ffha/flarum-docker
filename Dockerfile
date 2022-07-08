@@ -1,5 +1,6 @@
 FROM php:8.1-apache
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+RUN a2enmod rewrite
 RUN rm -rf /etc/apt/preferences.d/*
 RUN apt-get update
 RUN apt-get install git unzip -y
@@ -12,16 +13,8 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install mysqli
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-RUN mkdir /app
-WORKDIR /app
-ENV APACHE_DOCUMENT_ROOT /app/public
-RUN chmod -R 755 /app
-RUN chown -R www-data:www-data /app
-RUN echo "<Directory /app/>" >> /etc/apache2/apache2.conf
-RUN echo "AllowOverride All" >> /etc/apache2/apache2.conf
-RUN echo "</Directory>" >> /etc/apache2/apache2.conf
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+WORKDIR /var/www/html
+RUN chmod -R 755 /var/www/html
 USER www-data
 RUN composer create-project flarum/flarum .
 RUN composer require flarum-lang/chinese-simplified
