@@ -12,6 +12,7 @@ RUN apt-get remove -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 WORKDIR /var/www/html
+RUN a2enmod rewrite
 RUN composer create-project flarum/flarum .
 RUN composer require flarum-lang/chinese-simplified
 RUN chmod 775 -R /var/www/html
